@@ -11,6 +11,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 public class CoolWeatherDB {
 
@@ -47,7 +48,7 @@ public class CoolWeatherDB {
 		{
 			ContentValues values = new ContentValues();
 			values.put("province_name", province.getProvinceName());
-			values.put("province_code", province.getProvinceName());
+			values.put("province_code", province.getProvinceCode());
 			db.insert("Province", null, values);
 		}
 	}
@@ -64,7 +65,7 @@ public class CoolWeatherDB {
 				Province province = new Province();
 				province.setId(cursor.getInt(cursor.getColumnIndex("id")));
 				province.setProvinceCode(cursor.getString(cursor.getColumnIndex("province_code")));
-				province.setProvinceName(cursor.getString(cursor.getColumnIndex("province_code")));
+				province.setProvinceName(cursor.getString(cursor.getColumnIndex("province_name")));
 				list.add(province);
 			
 			}while(cursor.moveToNext());
@@ -86,7 +87,8 @@ public class CoolWeatherDB {
 	public List<City> loadCities(int provinceId)
 	{
 		List<City> list = new ArrayList<City>();
-		Cursor cursor = db.query("city" , null , "province_id = ?" , new String[]{ String.valueOf(provinceId) } , null , null , null);
+		Cursor cursor = db.query("City" , null , "province_id = ?" , new String[]{ String.valueOf(provinceId) } , null , null , null);
+
 		if(cursor.moveToFirst())
 		{
 			do
